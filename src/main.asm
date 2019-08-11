@@ -102,7 +102,7 @@ TileStart:
 
 FontTiles:
 INCBIN "tiles.bin"
-FontTilesEnd: ; 0x20-0x7F
+FontTilesEnd: ; 0x20-0x4F
 
 TileEnd:
 
