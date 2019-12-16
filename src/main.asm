@@ -87,10 +87,12 @@ _start:
     ld [rLCDC], a
 
 ; Switch to Bank 2 for sound fns.
+
     ld a,$02
     ld [rROMB0],a
     call main
     halt
+
 
 SECTION "main", ROMX,BANK[2]
 main:
@@ -122,24 +124,14 @@ ENDR
     jr nz, .numLoop
 
 .animBegin
-    ld a, tiles_volume
-    ld hl, _SCRN0+$220 ; Lower left of screen
-.iLoop
+    ld a, 0
+    ld [rSCX], a
+    ld [rSCY], a
+.animLoop
     wait_div 8, 7
     wait_lcd
-    ld [hl], a
+    ld [rSCX], a
     inc a
-    cp tiles_volume_end
-    jr nz, .iLoop
-
-.dLoop
-    dec a
-    wait_div 8, 7
-    wait_lcd
-    ld [hl], a
-    cp tiles_volume
-    jr nz, .dLoop
-
-    jp .animBegin
+    jp .animLoop
     ret
 
