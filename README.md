@@ -5,5 +5,5 @@ GameBoy Color Music Maker
 * rgbds - [rednex/rgbds](https://github.com/rednex/rgbds)
 
 ## Testing
-* [BGB (GameBoy Emulator)](http://bgb.bircd.org/)
+* [mGBA](http://mgba.io)
 * Testing on GBC with Inside Gadgets [GBxCartRW](https://shop.insidegadgets.com/product/gbxcart-rw/)
