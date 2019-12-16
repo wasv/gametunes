@@ -6,11 +6,17 @@ OBJS=$(patsubst src/%.asm, build/%.o, $(SRCS))
 GFXS=$(patsubst data/%.png, data/%.bin, $(PNGS))
 
 .SECONDARY: $(OBJS) $(GFXS)
-.PHONY: all gfx
+.PHONY: all gfx run debug
 
 all: build/$(TARGET).gbc
 
 gfx: $(GFXS)
+
+run: build/$(TARGET).gbc
+	mgba -2 $<
+
+debug: build/$(TARGET).gbc
+	mgba -2 -d $<
 
 data/%.bin: data/%.png
 	rgbgfx -o $@ $<
