@@ -11,7 +11,7 @@ wait_vblank : MACRO
 ENDM
 
 ; Wait till VRAM not in use.
-wait_lcd: MACRO
+wait_lcd : MACRO
     push af
     push hl
     ld hl, rSTAT
@@ -35,13 +35,13 @@ wait_cyc : MACRO
 ENDM
 
 ; Waits for a certain time period.
-; NOTE: Uses 4096 Hz divider clock.
-wait_div: MACRO
+; NOTE: Uses 8192 Hz divider clock.
+wait_div : MACRO
     push af
     push bc
     push hl
-    ld c, \1
-    ld a, \2
+    ld c, \1 ; Number of ticks to wait.
+    ld a, 1 << \2 ; Bit from divider to test for tick
     ld hl, rDIV
 .loopDiv\@
     ld [hl], 0

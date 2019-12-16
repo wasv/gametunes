@@ -1,6 +1,7 @@
 ;; -*- mode: rgbds; -*-
 INCLUDE "hardware.inc"
 INCLUDE "engine.inc"
+INCLUDE "gfx.inc"
 
 ; rst vectors are currently unused
 SECTION "rst00",ROM0[0]
@@ -94,23 +95,25 @@ _start:
 SECTION "main", ROMX,BANK[2]
 main:
 .begin
+    ld a, tiles_status
+    ld hl, _SCRN0+$220 ; Lower left of screen
+
+.iloop
+    wait_div 8, 7
+    wait_lcd
+    ld [hl], a
+    inc a
+    cp tiles_status_end
+    jr nz, .iloop
+
+.dloop
+    dec a
+    wait_div 8, 7
+    wait_lcd
+    ld [hl], a
+    cp tiles_status
+    jr nz, .dloop
+
     jp .begin
     ret
 
-SECTION "tiles", ROMX,BANK[1]
-TileStart:
-
-FontTiles:
-INCBIN "tiles.bin"
-FontTilesEnd: ; 0x20-0x4F
-
-TileEnd:
-
-SECTION "palette",ROMX,BANK[1]
-BGPal:
-    dw %0111111111111111, %0000001111100000, \
-       %0000000000011111, %0111110000000000
-
-BGPalAlt:
-    dw %0111111111111111, %0000001111100000, \
-       %0111110000000000, %0000000000011111
