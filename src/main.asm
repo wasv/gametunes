@@ -94,26 +94,52 @@ _start:
 
 SECTION "main", ROMX,BANK[2]
 main:
-.begin
-    ld a, tiles_status
-    ld hl, _SCRN0+$220 ; Lower left of screen
+.numBegin
+    ld de, 0 ; digit offset
+    ld c, tiles_number ; tile base
+.numLoop
+    ld a, e
+REPT 4
+    srl a
+ENDR
+    ld hl, _SCRN0
+    add a, c
+    add hl, de
+    wait_lcd
+    ld [hl], a
+    
+    ld a, e
+    and $0f
+    ld hl, _SCRN0+$20 ; screen location
+    add a, c
+    add hl, de
+    wait_lcd
+    ld [hl], a
+    
+    inc e
+    ld a, e
+    cp $20
+    jr nz, .numLoop
 
-.iloop
+.animBegin
+    ld a, tiles_volume
+    ld hl, _SCRN0+$220 ; Lower left of screen
+.iLoop
     wait_div 8, 7
     wait_lcd
     ld [hl], a
     inc a
-    cp tiles_status_end
-    jr nz, .iloop
+    cp tiles_volume_end
+    jr nz, .iLoop
 
-.dloop
+.dLoop
     dec a
     wait_div 8, 7
     wait_lcd
     ld [hl], a
-    cp tiles_status
-    jr nz, .dloop
+    cp tiles_volume
+    jr nz, .dLoop
 
-    jp .begin
+    jp .animBegin
     ret
 
